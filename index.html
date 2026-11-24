@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>أطياب السعيد للعطور والبخور</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=El+Messiri:wght@500;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light;
+  --gold:#5d5852;
+  --gold2:#9a948c;
+  --cream:#25221f;
+  --dim:#7b756e;
+  --bg1:#d6d3cf;
+  --bg2:#efedea;
+  --accent:#7a5c3c;
+}
+*{box-sizing:border-box}
+html{background:var(--bg1)}
+body{
+  margin:0;
+  min-height:100svh;
+  color:var(--cream);
+  font-family:"Tajawal",system-ui,sans-serif;
+  line-height:1.5;
+  background:radial-gradient(ellipse 90% 45% at 50% 0,#ffffff 0,transparent 70%),
+              radial-gradient(ellipse 70% 40% at 100% 100%,#c4c0bb 0,transparent 70%),
+              linear-gradient(var(--bg2),var(--bg1) 60%);
+  overflow-x:hidden;
+}
+button:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+/* Top bar */
+.topbar{
+  position:fixed;
+  top:0; left:0; right:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:calc(10px + env(safe-area-inset-top,0)) 14px 10px;
+  z-index:100;
+  pointer-events:none;
+}
+.topbar > *{pointer-events:auto}
+.cat-dots{
+  display:flex;
+  gap:6px;
+  justify-content:center;
+}
+.cat-dots button{
+  width:8px;height:8px;
+  border-radius:50%;
+  border:0;
+  background:var(--gold2);
+  opacity:.5;
+  cursor:pointer;
+  transition:.2s;
+}
+.cat-dots button.active{
+  opacity:1;
+  background:var(--gold);
+  transform:scale(1.25);
+}
+
+/* Category tabs */
+.cat-tabs{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:8px;
+  padding:8px 14px calc(12px + env(safe-area-inset-top,0));
+  position:sticky;
+  top:0;
+  z-index:90;
+  background:rgba(214,211,207,.85);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid rgba(139,132,125,.2);
+}
+.cat-tabs button{
+  background:rgba(255,255,255,.55);
+  border:1px solid var(--gold2);
+  color:var(--gold);
+  border-radius:999px;
+  padding:6px 14px;
+  font:inherit;
+  font-size:.9rem;
+  font-weight:500;
+  cursor:pointer;
+  transition:.2s;
+  white-space:nowrap;
+}
+.cat-tabs button.active{
+  background:var(--gold);
+  color:#fff;
+  border-color:var(--gold);
+  box-shadow:0 2px 8px rgba(93,88,82,.25);
+}
+
+/* Header */
+header{
+  text-align:center;
+  padding:calc(58px + env(safe-area-inset-top,0)) 20px 14px;
+}
+.logo{
+  display:block;
+  width:96px;height:96px;
+  border-radius:50%;
+  object-fit:cover;
+  margin:0 auto 10px;
+  box-shadow:0 0 0 1px var(--gold2),0 0 30px rgba(139,132,125,.35);
+}
+h1{
+  font-family:"El Messiri","Cormorant Garamond",serif;
+  font-weight:700;
+  font-size:clamp(2.2rem,10vw,3.4rem);
+  line-height:1.1;
+  margin:0;
+  color:var(--gold);
+  text-shadow:0 1px 0 rgba(255,255,255,.7);
+}
+.sub{
+  font-family:"Cormorant Garamond","El Messiri",serif;
+  font-style:italic;
+  font-size:1.15rem;
+  color:var(--cream);
+  margin:3px 0 0;
+}
+.orn{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  width:min(220px,55%);
+  margin:12px auto 0;
+}
+.orn::before,.orn::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
+.orn::after{transform:scaleX(-1)}
+.orn b{width:6px;height:6px;background:var(--gold);transform:rotate(45deg)}
+
+/* Slider */
+.slider{
+  position:relative;
+  max-width:1100px;
+  margin:0 auto;
+  padding:0 44px calc(24px + env(safe-area-inset-bottom,0));
+  direction:ltr; /* keep slider mechanics left-to-right regardless of page dir */
+}
+.slider-viewport{
+  overflow:hidden;
+  border-radius:16px;
+}
+.slides{
+  display:flex;
+  transition:transform .45s cubic-bezier(.25,.8,.25,1);
+}
+.slide{
+  flex:0 0 100%;
+  min-width:100%;
+  padding:10px 8px 20px;
+  direction:rtl;
+}
+
+/* Nav arrows */
+.nav{
+  position:absolute;
+  top:32px;
+  width:38px;height:38px;
+  border-radius:50%;
+  border:1px solid var(--gold2);
+  background:rgba(255,255,255,.7);
+  color:var(--gold);
+  font-size:1.2rem;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  z-index:10;
+  backdrop-filter:blur(4px);
+}
+.nav:hover{background:rgba(255,255,255,.9)}
+.nav:disabled{opacity:.35;cursor:not-allowed}
+.nav.prev{left:0;right:auto}
+.nav.next{right:0;left:auto}
+
+/* Category card */
+.cat-card{
+  background:rgba(255,255,255,.45);
+  border:1px solid rgba(139,132,125,.25);
+  border-radius:18px;
+  padding:22px 26px 28px;
+  box-shadow:0 8px 30px rgba(0,0,0,.04);
+  backdrop-filter:blur(3px);
+}
+.cat-title{
+  text-align:center;
+  margin:0 0 18px;
+  font-weight:700;
+  color:var(--cream);
+}
+.cat-title big{
+  display:block;
+  font-family:"El Messiri",serif;
+  font-size:clamp(1.6rem,6vw,2.2rem);
+}
+.cat-title small{
+  display:block;
+  font-family:"Cormorant Garamond",serif;
+  font-size:1.1rem;
+  color:var(--gold);
+  font-weight:500;
+  letter-spacing:.02em;
+}
+
+/* Product table */
+.table{
+  width:100%;
+}
+.thead,.trow{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:0;
+  align-items:baseline;
+}
+.thead{
+  border-bottom:1px solid var(--gold2);
+  padding-bottom:8px;
+  margin-bottom:6px;
+  font-size:.9rem;
+  color:var(--dim);
+}
+.thead .name-col{text-align:start}
+.thead .sizes-col{display:flex;gap:8px}
+.thead .size-h{
+  width:4.8rem;
+  text-align:center;
+  font-weight:700;
+  color:var(--gold);
+  font-family:"El Messiri",serif;
+  font-size:1rem;
+}
+
+.trow{
+  padding:7px 0;
+  font-size:1.05rem;
+  border-bottom:1px dashed rgba(139,132,125,.18);
+}
+.trow:last-child{border-bottom:0}
+.trow.out{opacity:.45}
+.trow.out .p-name{text-decoration:line-through}
+
+.p-main{
+  display:flex;
+  align-items:baseline;
+  gap:8px;
+  min-width:0;
+  overflow:hidden;
+}
+.p-name{
+  font-weight:500;
+  color:var(--cream);
+  overflow-wrap:anywhere;
+  flex:1;
+}
+.dots{
+  flex:1;
+  min-width:20px;
+  border-bottom:1px dotted var(--dim);
+  transform:translateY(-4px);
+  margin:0 4px;
+}
+.en .p-name{text-transform:uppercase;letter-spacing:.01em;font-size:.98rem}
+
+.sizes-row{
+  display:flex;
+  gap:8px;
+}
+.p-cell{
+  width:4.8rem;
+  text-align:center;
+  color:var(--gold);
+  font-weight:700;
+  white-space:nowrap;
+}
+.p-cell small{
+  font-weight:500;
+  font-size:.72rem;
+  color:var(--dim);
+  margin-inline-start:2px;
+}
+.p-cell.empty{color:transparent}
+.tag{
+  color:#a8503f;
+  font-size:.85rem;
+  font-weight:700;
+  width:4.8rem;
+  text-align:center;
+}
+
+/* Swipe hint */
+.swipe-hint{
+  text-align:center;
+  color:var(--dim);
+  font-size:.8rem;
+  margin-top:10px;
+  opacity:.7;
+}
+
+@media (max-width:720px){
+  h1{font-size:clamp(1.8rem,8vw,2.6rem)}
+  .sub{font-size:1rem}
+  .cat-tabs button{font-size:.82rem;padding:5px 10px}
+  .slider{padding:0 32px 16px}
+  .nav{top:24px;width:30px;height:30px;font-size:.9rem}
+  .cat-card{padding:14px 10px 18px}
+  .cat-title big{font-size:1.35rem}
+  .thead .size-h,.p-cell,.tag{width:3.2rem;font-size:.78rem}
+  .trow{font-size:.82rem;padding:5px 0}
+  .p-name{line-height:1.35}
+  .dots{display:none}
+}
+@media (max-width:480px){
+  h1{font-size:clamp(1.6rem,7vw,2.2rem)}
+  .sub{font-size:.9rem}
+  .cat-tabs button{font-size:.75rem;padding:4px 8px}
+  .slider{padding:0 28px 16px}
+  .nav{top:22px;width:28px;height:28px;font-size:.85rem}
+  .cat-card{padding:12px 8px 16px}
+  .cat-title big{font-size:1.2rem}
+  .thead .size-h,.p-cell,.tag{width:2.8rem;font-size:.72rem}
+  .p-cell small{font-size:.55rem}
+  .trow{font-size:.76rem}
+}
+@media (prefers-reduced-motion:no-preference){
+  header>*{opacity:0;animation:up .7s ease forwards}
+  header>*:nth-child(2){animation-delay:.1s}
+  header>*:nth-child(3){animation-delay:.2s}
+  @keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span></span>
+</div>
+
+<header>
+  <img class="logo" src="logo.avif" id="logo" alt="" hidden onerror="this.hidden=true">
+  <h1 id="shopName"></h1>
+  <p class="sub" id="shopSub"></p>
+  <div class="orn"><b></b></div>
+</header>
+
+<nav class="cat-tabs" id="catTabs" aria-label="Categories"></nav>
+
+<section class="slider" id="slider" aria-label="Categories">
+  <button class="nav prev" id="prevBtn" type="button" aria-label="Previous">❮</button>
+  <div class="slider-viewport">
+    <div class="slides" id="slides"></div>
+  </div>
+  <button class="nav next" id="nextBtn" type="button" aria-label="Next">❯</button>
+</section>
+<p class="swipe-hint" id="swipeHint"></p>
+
+<script src="menu_data.js"></script>
+<script>
+/* ========= مصدر البيانات =========
+   1) menu_data.js (بدون CORS)  2) menu.json (على سيرفر)  3) بيانات تجريبية */
+const SAMPLE={
+  shop:{name_ar:"أطياب السعيد",subtitle_ar:"للعطور والبخور",logo:"logo.avif",currency_ar:"ر.س"},
+  items:[
+    {category:"عطور حريمي",name_ar:"عود بوكيه",available:true,sizes:[{size:"25 مل",price:230},{size:"50 مل",price:280}]},
+    {category:"عطور رجالي",name_ar:"داراج الراساسي",available:true,sizes:[{size:"25 مل",price:275},{size:"50 مل",price:340}]}
+  ]
+};
+let DATA=null,current=0;
+const $=id=>document.getElementById(id);
+const T={out:"غير متوفر",none:"مفيش منتجات",sub:"المنتج",cur:"ر.س",swipe:"اسحب يمين/شمال للتنقل"};
+
+async function load(){
+  if(typeof window.MENU_DATA!=="undefined")return window.MENU_DATA;
+  try{const r=await fetch("menu.json",{cache:"no-cache"});if(r.ok)return await r.json()}catch(e){}
+  try{const r=await fetch("menu.xlsx",{cache:"no-cache"});if(r.ok)return await fromXlsx(await r.arrayBuffer())}catch(e){}
+  return SAMPLE;
+}
+const loadScript=src=>new Promise((ok,no)=>{const s=document.createElement("script");s.src=src;s.onload=ok;s.onerror=no;document.head.appendChild(s)});
+async function fromXlsx(buf){
+  await loadScript("https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js");
+  const wb=XLSX.read(buf,{type:"array"});
+  const rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:""});
+  const pick=(r,keys)=>{for(const k of keys){if(r[k]!==undefined&&r[k]!=="")return String(r[k]).trim()}return ""};
+  const map=new Map();
+  rows.forEach(r=>{
+    const name=pick(r,["name_ar","الاسم"]);if(!name)return;
+    if(!map.has(name)){
+      const av=pick(r,["متاح"]).toLowerCase();
+      map.set(name,{category:pick(r,["categories_ar","الفئة"])||"أخرى",name_ar:name,available:!["لا","0","false","no"].includes(av),sizes:[]});
+    }
+    const price=pick(r,["sale_price","السعر"]);
+    if(price!=="")map.get(name).sizes.push({size:pick(r,["Size","الحجم"]),price:Number(price)});
+  });
+  return{shop:SAMPLE.shop,items:[...map.values()]};
+}
+
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt=n=>Number(n).toLocaleString("ar-EG");
+const sizeLabel=z=>z.size;
+
+function groupByCategory(items){
+  const groups=new Map();
+  items.forEach(i=>{
+    const c=i.category||"أخرى";
+    if(!groups.has(c))groups.set(c,{category:c,items:[]});
+    groups.get(c).items.push(i);
+  });
+  return [...groups.values()];
+}
+
+function render(){
+  const s=DATA.shop||{};
+  document.documentElement.lang="ar";
+  document.documentElement.dir="rtl";
+  $("shopName").textContent=s.name_ar||"";
+  $("shopSub").textContent=s.subtitle_ar||T.sub;
+  document.title=$("shopName").textContent;
+  if(s.logo){$("logo").src=s.logo;$("logo").hidden=false}
+  $("swipeHint").textContent=T.swipe;
+  const cur=s.currency_ar||T.cur;
+
+  const cats=groupByCategory(DATA.items||[]);
+  if(!cats.length){$("slides").innerHTML=`<p class="msg">${T.none}</p>`;return;}
+
+  $("slides").innerHTML=cats.map((cat,idx)=>{
+    const cols=[];
+    cat.items.forEach(i=>(i.sizes||[]).forEach(z=>{if(!cols.find(x=>x.size===z.size))cols.push(z)}));
+    cols.sort((a,b)=>{
+      const an=parseFloat(String(a.size).replace(/[^\d.]/g,""))||0;
+      const bn=parseFloat(String(b.size).replace(/[^\d.]/g,""))||0;
+      return an-bn;
+    });
+
+    const title=`<big>${esc(cat.category)}</big>`;
+
+    const headSizes=cols.map(z=>`<span class="size-h">${esc(sizeLabel(z))}</span>`).join("");
+    const rows=cat.items.map(i=>{
+      const name=i.name_ar;
+      const out=i.available===false;
+      const cells=out?`<span class="tag">${T.out}</span>`
+        :cols.map(z=>{
+            const f=(i.sizes||[]).find(x=>x.size===z.size);
+            return `<span class="p-cell ${f?'':'empty'}">${f?fmt(f.price):""}${f?`<small>${esc(cur)}</small>`:""}</span>`;
+          }).join("");
+      return `<div class="trow ${out?'out':''}">
+        <div class="p-main"><span class="p-name">${esc(name)}</span><span class="dots"></span></div>
+        <div class="sizes-row">${cells}</div>
+      </div>`;
+    }).join("");
+
+    return `<section class="slide" data-idx="${idx}" aria-label="${esc(cat.category)}">
+      <div class="cat-card">
+        <h2 class="cat-title"><span>${title}</span></h2>
+        <div class="table">
+          <div class="thead">
+            <div class="name-col">${T.sub}</div>
+            <div class="sizes-col">${headSizes}</div>
+          </div>
+          ${rows}
+        </div>
+      </div>
+    </section>`;
+  }).join("");
+
+  renderTabs(cats);
+  goTo(current,true);
+  updateNav(cats.length);
+}
+
+function renderTabs(cats){
+  $("catTabs").innerHTML=cats.map((cat,i)=>
+    `<button type="button" data-idx="${i}" ${i===current?'class="active"':''}>${esc(cat.category)}</button>`
+  ).join("");
+  $("catTabs").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>goTo(Number(b.dataset.idx))));
+}
+
+function goTo(idx,noAnim=false){
+  const cats=groupByCategory(DATA.items||[]);
+  if(!cats.length)return;
+  current=Math.max(0,Math.min(idx,cats.length-1));
+  const pct=-current*100;
+  $("slides").style.transition=noAnim?"none":"";
+  $("slides").style.transform=`translateX(${pct}%)`;
+  updateNav(cats.length);
+  $("catTabs").querySelectorAll("button").forEach((b,i)=>b.classList.toggle("active",i===current));
+}
+function updateNav(n){
+  $("prevBtn").disabled=current===0;
+  $("nextBtn").disabled=current>=n-1;
+}
+
+$("prevBtn").addEventListener("click",()=>goTo(current-1));
+$("nextBtn").addEventListener("click",()=>goTo(current+1));
+
+document.addEventListener("keydown",e=>{
+  if(e.key==="ArrowRight")goTo(current+1);
+  if(e.key==="ArrowLeft")goTo(current-1);
+});
+
+// Touch swipe
+let startX=0,swiping=false;
+$("slider").addEventListener("touchstart",e=>{startX=e.touches[0].clientX;swiping=true;},{passive:true});
+$("slider").addEventListener("touchend",e=>{
+  if(!swiping)return;swiping=false;
+  const endX=e.changedTouches[0].clientX;
+  const diff=startX-endX;
+  if(Math.abs(diff)>50){
+    if(diff>0)goTo(current+1); else goTo(current-1);
+  }
+},{passive:true});
+
+load().then(d=>{DATA=d;render();});
+</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor/IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.log
+
+# Generated preview files (keep menu_data.js and menu.json if you want them on GitHub)
+# rendered_sample.html
+# analysis*.json
+# check_*.txt
+# *_rows.txt
+# regex_test.txt
+# menu_raw*.json
